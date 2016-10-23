@@ -990,6 +990,7 @@
 #include "code\game\turfs\flooring\flooring_premade.dm"
 #include "code\game\turfs\initialization\init.dm"
 #include "code\game\turfs\initialization\maintenance.dm"
+#include "code\game\turfs\simulated\chasm.dm"
 #include "code\game\turfs\simulated\floor.dm"
 #include "code\game\turfs\simulated\floor_acts.dm"
 #include "code\game\turfs\simulated\floor_attackby.dm"
@@ -2136,5 +2137,5 @@
 #include "code\ZAS\Zone.dm"
 #include "interface\interface.dm"
 #include "interface\skin.dmf"
-#include "maps\polaris-1.dmm"
+#include "maps\BM13_area_testmap.dmm"
 // END_INCLUDE
