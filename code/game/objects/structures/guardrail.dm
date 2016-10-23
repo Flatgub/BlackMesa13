@@ -6,9 +6,11 @@
 	density = 1
 	w_class = ITEMSIZE_NORMAL
 
-	layer = 4
+	layer = 3.2
 	pressure_resistance = 5*ONE_ATMOSPHERE
 	anchored = 1
+	throwpass = 1
+	climbable = 1
 	flags = ON_BORDER + CONDUCT
 	var/maximal_heat = T0C + 100 		// Maximal heat before this window begins taking damage from fire
 	var/damage_per_fire_tick = 2.0 		// Amount of damage per fire tick. Regular windows are not fireproof so they might as well break quickly.
@@ -100,6 +102,29 @@
 
 /// ------------------------------------------------- CAN PASS
 
+/obj/structure/window/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
+	if(istype(mover) && mover.checkpass(PASSGLASS))
+		return 1
+	if(get_dir(loc, target) & dir)
+		return !density
+	else
+		return 1
+
+
+/*
+// --[ ATTEMPT THREE ]--
+/obj/structure/window/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
+	if(istype(mover, /obj/item))
+		return 1
+	if(istype(mover) && mover.checkpass(PASSGLASS))
+		return 1
+	if(get_dir(loc, target) & dir)
+		return !density
+	else
+		return 1
+
+
+// --[ ATTEMPT TWO ]--
 /obj/structure/guardrail/CanPass(atom/movable/mover, turf/target)
 	usr << "Something is trying to enter"
 	if(istype(mover, /obj/item))
@@ -117,7 +142,7 @@
 
 	return 0
 
-/*
+// --[ ATTEMPT ONE ]--
 /obj/structure/guardrail/CanPass(atom/movable/A, turf/T)
 
 	if(istype(A) && A.checkpass(A))
@@ -165,7 +190,26 @@
 // -------------------------------------------------- CAN PASS END
 
 // -------------------------------------------------- CAN EXIT
+
+/obj/structure/window/CheckExit(atom/movable/O as mob|obj, target as turf)
+	if(istype(O) && O.checkpass(PASSGLASS))
+		return 1
+	if(get_dir(O.loc, target) == dir)
+		return 0
+	return 1
+
 /*
+// --[ ATTEMPT THREE ]--
+/obj/structure/window/CheckExit(atom/movable/O as mob|obj, target as turf)
+	if(istype(O, /obj/item))
+		return 1
+	if(istype(O) && O.checkpass(PASSTABLE))
+		return 1
+	if(get_dir(O.loc, target) == dir)
+		return 0
+	return 1
+
+// --[ ATTEMPT TWO ]--
 /obj/structure/guardrail/CheckExit(atom/movable/O, target as turf)
 	usr << "Something is trying to exit"
 	if(istype(O, /obj/item))
@@ -177,7 +221,7 @@
 		return 0
 	return 1
 
-
+// --[ ATTEMPT ONE ]--
 /obj/structure/guardrail/CheckExit(atom/O, target as turf)
 	if(istype(O, /obj/item))
 		usr << "It was an item, I'm letting it through"
